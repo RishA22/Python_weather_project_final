@@ -1,5 +1,5 @@
 # Plus Resources: Weather Project Template
-
+[![Tests](https://github.com/RishA22/Python_weather_project_final/actions/workflows/tests.yml/badge.svg)](https://github.com/RishA22/Python_weather_project_final/actions/workflows/tests.yml)
 Starter code for the Plus Weather project.
 
 ## TODO
