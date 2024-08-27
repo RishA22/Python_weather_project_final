@@ -35,8 +35,8 @@ def convert_f_to_c(temp_in_fahrenheit):
     Returns:
         A float representing a temperature in degrees Celcius, rounded to 1 decimal place.
     """
-    celcius = (float(temp_in_fahrenheit) - 32) / (9/5)
-    return (round(celcius,1))
+    to_celcius = (float(temp_in_fahrenheit) - 32) / (9/5)
+    return (round(to_celcius,1))
 
 
 def calculate_mean(weather_data):
@@ -50,8 +50,8 @@ def calculate_mean(weather_data):
     len_data = len(weather_data)
     sum = 0
     for data in weather_data:
-        int_data = float(data)
-        sum = int_data + sum
+        float_data = float(data)
+        sum = float_data + sum
     return (sum/len_data)
 
 
@@ -68,9 +68,9 @@ def load_data_from_csv(csv_file):
         next(csv_reader) # skip headers (first row)
 
         list = []
-        for i in csv_reader:
-            if i:
-                formatted_row = [i[0]] + [int(x) for x in i[1:]]
+        for row in csv_reader:
+            if row:
+                formatted_row = [row[0]] + [int(x) for x in row[1:]]
                 list.append(formatted_row)
         return (list)
 
@@ -84,9 +84,9 @@ def find_min(weather_data):
     """
     if weather_data:
         list = []
-        for i in weather_data:
+        for data in weather_data:
 
-                float_data = float(i)
+                float_data = float(data)
                 list.append(float_data)
         min_value = min(list)
         return (min_value, len(list) - 1 - list[::-1].index(min_value))
@@ -104,8 +104,8 @@ def find_max(weather_data):
     """
     if weather_data:
         list = []
-        for i in weather_data:
-            float_data = float(i)
+        for data in weather_data:
+            float_data = float(data)
             list.append(float_data)
         max_value = max(list)
         return (max_value, len(list) - 1 - list[::-1].index(max_value))
@@ -127,17 +127,17 @@ def generate_summary(weather_data):
     for i in weather_data:
         min_values.append(i[1])
         max_values.append(i[2])
-    mini = convert_f_to_c(min(min_values))
+    to_celsius_min_values = convert_f_to_c(min(min_values))
     index = min_values.index(min(min_values))
     date = convert_date(weather_data[index][0])
     avg_low = convert_f_to_c(calculate_mean(min_values))
 
-    maxi = convert_f_to_c(max(max_values))
+    to_celsius_max_values = convert_f_to_c(max(max_values))
     avg_max = convert_f_to_c(calculate_mean(max_values))
     index1 = max_values.index(max(max_values))
     date1 = convert_date(weather_data[index1][0])
 
-    return(f"{len_list} Day Overview\n  The lowest temperature will be {mini}{DEGREE_SYMBOL}, and will occur on {date}.\n  The highest temperature will be {maxi}{DEGREE_SYMBOL}, and will occur on {date1}.\n  The average low this week is {avg_low}{DEGREE_SYMBOL}.\n  The average high this week is {avg_max}{DEGREE_SYMBOL}.\n")    
+    return(f"{len_list} Day Overview\n  The lowest temperature will be {to_celsius_min_values}{DEGREE_SYMBOL}, and will occur on {date}.\n  The highest temperature will be {to_celsius_max_values}{DEGREE_SYMBOL}, and will occur on {date1}.\n  The average low this week is {avg_low}{DEGREE_SYMBOL}.\n  The average high this week is {avg_max}{DEGREE_SYMBOL}.\n")    
 
 def generate_daily_summary(weather_data):
     """Outputs a daily summary for the given weather data.
@@ -149,12 +149,10 @@ def generate_daily_summary(weather_data):
     """
     summary = ""
 
-    for i in weather_data:
-        value = convert_date(i[0])
-
-        min_temp = convert_f_to_c(i[1])
-
-        max_temp = convert_f_to_c(i[2])
+    for row in weather_data:
+        value = convert_date(row[0])
+        min_temp = convert_f_to_c(row[1])
+        max_temp = convert_f_to_c(row[2])
 
         summary += (f"---- {value} ----\n  Minimum Temperature: {min_temp}{DEGREE_SYMBOL}\n  Maximum Temperature: {max_temp}{DEGREE_SYMBOL}\n\n")
     return (summary)
